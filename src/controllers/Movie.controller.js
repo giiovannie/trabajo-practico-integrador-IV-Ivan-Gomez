@@ -102,3 +102,27 @@ export const ActualizarMovie = async (req,res)=>{
         res.status(401).json(errorMessage)
     }
 }
+
+export const eliminarPelicula = async (req,res)=>{
+    try {
+
+        const { id } = req.params;
+
+        const filtrarPelicula = await TableMovie.findOne({
+            where: { id }
+        });
+
+        if(!filtrarPelicula){
+            return res.status(404).json(errorMessage);
+        }
+
+        await filtrarPelicula.destroy();
+
+        res.status(200).json({
+            message: "pelicula eliminada correctamente"
+        });
+
+    } catch (error) {
+        res.status(500).json(errorMessage);
+    }
+}
