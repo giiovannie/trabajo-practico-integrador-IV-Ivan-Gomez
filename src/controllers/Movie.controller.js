@@ -16,18 +16,18 @@ export const InfoMovie = async (req,res)=>{
 
 export const findMovie = async (req,res)=>{
     try {
-        const idReq = req.params
+        const {id} = req.params
         const MovieFiltro = await TableMovie.findOne({
-            where: { id: idReq}
+            where: { id }
         })
 
         if(!MovieFiltro){
-            res.status(404).json(errorMessage)
+            return res.status(404).json(errorMessage)
         }
 
         res.status(200).json(MovieFiltro)
     } catch (error) {
-        res.styatus(400).json(errorMessage)
+        res.status(400).json(errorMessage)
     }
 }
 
@@ -35,7 +35,7 @@ export const insertMovie = async (req,res)=>{
     try {
         const {title, genere, duration, year,synopsis } = req.body;
 
-        if(!title || !genre || !duration || !year){
+        if(!title || !genere || !duration || !year){
             return res.status(400).json(errorMessage)
         }
         
@@ -71,6 +71,7 @@ export const insertMovie = async (req,res)=>{
         res.json(agregarPelicula)
 
     } catch (error) {
-        res.status(401).json(errorMessage)
+        res.status(500).json(errorMessage)
     }
 }
+
