@@ -75,3 +75,30 @@ export const insertMovie = async (req,res)=>{
     }
 }
 
+export const ActualizarMovie = async (req,res)=>{
+    try {
+        const {id} = req.params;
+        const filtrarMovie = await TableMovie.findOne({
+            where: { id }
+        })
+
+        if(!filtrarMovie){
+            return res.status(404).json(errorMessage)
+        }
+
+        const { title, genere, duration, year, synopsis }= req.body
+
+        const UpdateTable = await TableMovie.update({
+            title,
+            genere,
+            year,
+            synopsis,
+            duration
+        }
+    )
+
+        res.json(UpdateTable)
+    } catch (error) {;
+        res.status(401).json(errorMessage)
+    }
+}
