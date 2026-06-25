@@ -43,10 +43,11 @@ export const insertMovie = async (req,res)=>{
             return res.status(400).json(errorMessage)
         }
         
-        if(
-            !Number.isInteger(Number(year)) || 
-            Number(year) < 1888
-        ){
+        if(synopsis && typeof synopsis !== "string"){
+            return res.status(400).json(errorMessage)
+        }
+
+        if(!Number.isInteger(Number(year)) || Number(year) < 1888){
             return res.status(400).json(errorMessage)
         }
 
@@ -88,6 +89,10 @@ export const ActualizarMovie = async (req,res)=>{
 
         const { title, genere, duration, year, synopsis }= req.body
 
+        if(synopsis && typeof synopsis !== "string"){
+            return res.status(400).json(errorMessage)
+        }
+
         const UpdateTable = await TableMovie.update({
             title,
             genere,
@@ -97,9 +102,13 @@ export const ActualizarMovie = async (req,res)=>{
         }
     )
 
+        if(synopsis && typeof synopsis !== "string"){
+            return res.status(400).json(errorMessage)
+        }
+
         res.json(UpdateTable)
     } catch (error) {;
-        res.status(401).json(errorMessage)
+        res.status(500).json(errorMessage)
     }
 }
 
